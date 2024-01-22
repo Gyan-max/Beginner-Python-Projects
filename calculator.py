@@ -23,8 +23,8 @@ def calculate():
 # Create the main window
 window = tk.Tk()
 window.title("Calculator")
-window.geometry("400x550")
-window.resizable(True, True)
+window.geometry("400x550") #width x height
+window.resizable(False, False)
 window.configure(bg="grey")
 
 # Entry widget to display input and results
@@ -43,7 +43,8 @@ buttons = [
 row_val = 1
 col_val = 0
 
-button_font = font.Font(family="Lucida Calligraphy", size=16)
+button_font = font.Font(family="Lucida Calligraphy", size=18)
+
 
 for button in buttons:
     tk.Button(window, text=button, padx=20, pady=20, font=button_font,
