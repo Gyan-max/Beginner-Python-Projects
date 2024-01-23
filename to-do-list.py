@@ -14,7 +14,7 @@ def add_task():
     else:
         tasks.append(task_string) #adding tasks to task list
         #using execute() statement to execute a sql statement
-        the_cursor.execute('insert into tasks values(?)',(task_string))
+        the_cursor.execute('insert into tasks values(?)',(task_string,))
         list_update()
         task_field.delete(0,"end")
 
@@ -42,12 +42,12 @@ def delete_task():
 #defining a function to delete all tasks form the list
 
 def delete_all_tasks():
-    message_box = messagebox.askyesorno("Delete All", "Are you Sure?" )
+    message_box = messagebox.askyesno("Delete All", "Are you Sure?" )
 
     if message_box==True:
         while(len(tasks)!=0):
             tasks.pop()
-        the_cursor.execute("delete form tasks")
+        the_cursor.execute("delete from tasks")
 
         list_update()
 
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     #defining label using ttk.label() widget
     header_label = ttk.Label(
         header_frame, text = "To-Do List",
-        font=("Lucida calligraphy", 40),
+        font=("Algerian", 40),
         background = "#FAEBD7",
         foreground = "#8B4513"
     )
@@ -113,16 +113,81 @@ if __name__ == "__main__":
 
     task_label = ttk.Label(
         function_frame,
-        text = "Enter the Task:",
-        font = ("Ariel","11","bold"),
+        text = "Enter Tasks:",
+        font = ("Ariel","12","bold"),
         background = "#FAEBD7",  
         foreground = "#000000"  
     )
+    task_label.place(x = 30 , y = 40)
+
+#defining entry field
+    task_field = ttk.Entry(
+        function_frame,
+        font = ("Ariel","12"),
+        width = 18,
+        
+        background = "#FFF8DC",
+        foreground = "#A52A2A" 
+
+    )
+
+    task_field.place(x = 30, y = 80)
 
 
+    #defining buttons
+    add_button = ttk.Button(
+        function_frame,
+        text = "Add Text",
+        width  = 24,
+        command = add_task
+    )
+    add_button.place(x = 30, y = 120)
+
+    del_button = ttk.Button(
+        function_frame,
+        text = "Delete Task",
+        width = 24,
+        command = delete_task
+    )
+    del_button.place(x=30, y= 160)
+    
+    del_all_button = ttk.Button(
+        function_frame,
+        text = "Delete All Tasks",
+        width = 24,
+        command = delete_all_tasks
+    )
+    del_all_button.place(x=30, y=200)
+
+    exit_button = ttk.Button(
+        function_frame,
+        text = "Exit",
+        width = 24,
+        command = close
+    )
+    exit_button.place(x=30, y=240)
 
 
+    #defining list box
+    task_listbox = tk.Listbox(
+        listbox_frame,
+        width = 37,
+        height = 21,
+        selectmode = "SINGLE",
+        bg = "#FFFFFF", 
+        fg =  "#000000", 
+        selectbackground = "#CD853F",
+        selectforeground = "#FFFFFF"
+    )
+
+    task_listbox.place(x=10,y=20)
+
+
+    restore_database()
+    list_update()
 
 
     guiWindow.mainloop()
-        
+    
+    the_connection.commit()
+    the_cursor.close()
