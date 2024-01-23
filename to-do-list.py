@@ -10,13 +10,47 @@ tasks = []
 def add_task():
     task_string = task_field.get()
     if len(task_string)==0:
-        messagebox.warning("Error", "Task box is Empty")
+        messagebox.showinfo("Error", "Task box is Empty")
     else:
         tasks.append(task_string) #adding tasks to task list
         #using execute() statement to execute a sql statement
         the_cursor.execute('insert into tasks values(?)',(task_string,))
         list_update()
         task_field.delete(0,"end")
+
+def delete_task():
+    try:
+        index = task_listbox.curselection()[0]
+        task, completed = tasks[index]
+        if task in [t[0] for t in tasks]:
+            tasks.pop(index)
+            list_update()
+            the_cursor.execute("delete from tasks where title = ?", (task,))
+    except IndexError:
+        messagebox.showinfo("Error", "Please select a task to delete")
+
+def mark_task_as_completed():
+    try:
+        index = task_listbox.curselection()[0]
+        task_tuple = tasks[index]
+        task, completed = task_tuple[0], task_tuple[1] if len(task_tuple) > 1 else 0
+        if not completed:
+            tasks[index] = (task, 1)  # Mark task as completed
+            the_cursor.execute("update tasks set completed = 1 where title = ?", (task,))
+            list_update()
+            update_completed_list()
+            messagebox.showinfo("Task Completed" , f"task {task} has been marked as completed.")
+    except IndexError:
+        messagebox.warning("Error", "Please select a task to mark as completed")
+
+def update_completed_list():
+    completed_tasks.clear()
+    for task, completed in tasks:
+        if completed:
+            completed_tasks.append((task, completed))
+    completed_listbox.delete(0, "end")
+    for task, completed in completed_tasks:
+        completed_listbox.insert("end", f"[Completed] {task}")
 
 
 #defining function to update new tasks in the list
@@ -37,7 +71,7 @@ def delete_task():
             the_cursor.execute("delete form tasks where title = ?", (the_value))
 
     except:
-        messagebox.warning("Error" , "Please select a task to delete")
+        messagebox.showinfo("Error" , "Please select a task to delete")
 
 #defining a function to delete all tasks form the list
 
@@ -150,6 +184,15 @@ if __name__ == "__main__":
         command = delete_task
     )
     del_button.place(x=30, y= 160)
+
+    mark_completed_button = ttk.Button(
+        function_frame,
+        text = "Mark Completed",
+        width = 24,
+        command = mark_task_as_completed
+    )
+
+    mark_completed_button.place(x=30, y=200)
     
     del_all_button = ttk.Button(
         function_frame,
@@ -157,7 +200,7 @@ if __name__ == "__main__":
         width = 24,
         command = delete_all_tasks
     )
-    del_all_button.place(x=30, y=200)
+    del_all_button.place(x=30, y=240)
 
     exit_button = ttk.Button(
         function_frame,
@@ -165,7 +208,7 @@ if __name__ == "__main__":
         width = 24,
         command = close
     )
-    exit_button.place(x=30, y=240)
+    exit_button.place(x=30, y=280)
 
 
     #defining list box
