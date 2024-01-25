@@ -5,6 +5,9 @@ import string
 import pyperclip #For copying password strength
 import zxcvbn  # For password strength estimation
 
+
+# Function to generate password
+
 def generate_password():
     length = int(length_var.get())
     use_special_characters = special_char_var.get() == 1
