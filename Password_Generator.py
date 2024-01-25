@@ -1,8 +1,8 @@
-import tkinter as tk
+import tkinter as tk # python GUI
 from tkinter import StringVar, IntVar
-import random
+import random # To select random character, special_character and numbers
 import string
-import pyperclip
+import pyperclip #For copying password strength
 import zxcvbn  # For password strength estimation
 
 def generate_password():
@@ -19,7 +19,6 @@ def generate_password():
     pyperclip.copy(password)
 
     # Estimate password strength and update the strength label
-    
     password_strength = zxcvbn.zxcvbn(password)
     strength_label.configure(text=f"Strength : {password_strength}/4")
 
@@ -67,3 +66,5 @@ strength_label.pack(pady=5)
 
 # Run the main loop
 window.mainloop()
+
+#.....................Author---->Gyan Ranjan
