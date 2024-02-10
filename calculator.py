@@ -27,23 +27,36 @@ window.geometry("400x550") #width x height
 window.resizable(False, False)
 window.configure(bg="grey")
 
+
 # Entry widget to display input and results
 entry_font = font.Font(family="Lucida Calligraphy", size=20)
 entry = tk.Entry(window, width=14, font=entry_font, justify="right", bd=10, insertwidth=4, bg="#d9d9d9")
 entry.grid(row=0, column=0, columnspan=4, pady=20)
 
+
 # Buttons for digits and operations
+
+
+
+# Clear button
+
+button_font = font.Font(family="Lucida Calligraphy", size=18)
+row_val = 1
+col_val = 0
+
+
+tk.Button(window, text="C", padx=20, pady=20, font=button_font, command=clear_entry, bg="sky blue", bd=5).grid(row=row_val, column=col_val, sticky="nsew")
+
 buttons = [
+    
     '9', '8', '7', '/',
     '6', '5', '4', '*',
     '3', '2', '1', '-',
     '0', '.', '=', '+'
 ]
 
-row_val = 1
-col_val = 0
 
-button_font = font.Font(family="Lucida Calligraphy", size=18)
+
 
 
 for button in buttons:
@@ -55,8 +68,18 @@ for button in buttons:
         col_val = 0
         row_val += 1
 
-# Clear button
-tk.Button(window, text="C", padx=20, pady=20, font=button_font, command=clear_entry, bg="sky blue", bd=5).grid(row=row_val, column=col_val, sticky="nsew")
+
+# for button in buttons:
+#     tk.Button(window, text=button, padx=20, pady=20, font=button_font,
+#               command=lambda btn=button: on_button_click(btn) if btn != '=' else calculate(),
+#               bg="orange", bd=5).grid(row=row_val, column=col_val, sticky="nsew")
+#     col_val += 1
+#     if col_val > 3:
+#         col_val = 0
+#         row_val += 1
+
+# # Clear button
+# tk.Button(window, text="C", padx=20, pady=20, font=button_font, command=clear_entry, bg="sky blue", bd=5).grid(row=row_val, column=col_val, sticky="nsew")
 # tk.Button(window, text="AC",padx=30, pady=30, font=button_font, command=clear_window,bg="sky blue", bd=6).pack(row=row_val,column=col_val, sticky="nsew")
 # Configure row and column weights
 for i in range(1, 6):
